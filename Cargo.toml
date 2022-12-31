@@ -1,0 +1,16 @@
+[package]
+name = "iceportal_rich_presense"
+version = "1.0.0"
+edition = "2021"
+authors = ["AdriDevelopsThings"]
+readme = "README.md"
+repository = "https://github.com/AdriDevelopsThings/iceportal_rich_presense"
+license = "AGPL-3.0"
+description = "Show your current ride in discord via the ICE portal api"
+
+
+[dependencies]
+discord-rich-presence = "0.2.3"
+iceportal = "2.0.0"
+inquire = "0.5.2"
+tokio = { version = "1", features = ["full"] }
