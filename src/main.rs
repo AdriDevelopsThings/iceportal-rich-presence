@@ -46,6 +46,7 @@ async fn main() {
     let status_info = ICEPortal::fetch_status().await
         .expect("Error while fetching iceportal data");
     let available_stops = trip_info.trip.stops.iter()
+        .filter(|stop| stop.info.position_status.is_none() || stop.info.position_status == Some(PositionStatus::Future))
         .map(|stop| stop.station.name.as_str()).collect::<Vec<&str>>();
     let leave_station = Select::new("At which station will you leave the train?", available_stops).prompt()
         .expect("Error while prompt");
