@@ -1,9 +1,12 @@
 use std::{time::Duration, process::exit};
 
 use discord_rich_presence::{DiscordIpcClient, DiscordIpc, activity::{self, Activity, Timestamps, Assets, Button}};
+use errors::ICEPortalRichPresenseError;
 use iceportal::{ICEPortal, trip_info::TripInfo, global_models::{PositionStatus, Stop}};
 use inquire::Select;
 use tokio::{select, time::sleep};
+
+mod errors;
 
 fn cancel_activity(client: &mut DiscordIpcClient) {
     client.clear_activity().expect("Error while clearing activity");
@@ -40,11 +43,9 @@ fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, buil
 }
 
 #[tokio::main]
-async fn main() {
-    let trip_info = ICEPortal::fetch_trip_info().await
-        .expect("Error while fetching iceportal data");
-    let status_info = ICEPortal::fetch_status().await
-        .expect("Error while fetching iceportal data");
+async fn main() -> Result<(), ICEPortalRichPresenseError>{
+    let trip_info = ICEPortal::fetch_trip_info().await?;
+    let status_info = ICEPortal::fetch_status().await?;
     let available_stops = trip_info.trip.stops.iter()
         .filter(|stop| stop.info.position_status.is_none() || stop.info.position_status == Some(PositionStatus::Future))
         .map(|stop| stop.station.name.as_str()).collect::<Vec<&str>>();
@@ -60,7 +61,7 @@ async fn main() {
     let (trip_info_sender, mut trip_info_receiver) = tokio::sync::mpsc::unbounded_channel();
     tokio::spawn(async move {
         loop {
-            let trip_info = ICEPortal::fetch_trip_info().await.expect("Error while fetching trip info");
+            let trip_info = ICEPortal::fetch_trip_info().await.unwrap();
             trip_info_sender.send(trip_info)
                 .expect("Error while putting message to trip_info channel");
             sleep(Duration::from_secs(30)).await;
@@ -91,4 +92,5 @@ async fn main() {
             },
         }
     }
+    Ok(())
 }
