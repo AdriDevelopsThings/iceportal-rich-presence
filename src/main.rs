@@ -1,15 +1,18 @@
 use std::{time::Duration, process::exit};
 
 use discord_rich_presence::{DiscordIpcClient, DiscordIpc, activity::{self, Activity, Timestamps, Assets, Button}};
-use errors::ICEPortalRichPresenseError;
+use errors::ICEPortalRichPresenceError;
 use iceportal::{ICEPortal, trip_info::TripInfo, global_models::{PositionStatus, Stop}};
 use inquire::Select;
+use series::translate_series;
 use tokio::{select, time::sleep};
 
 mod errors;
+mod series;
 
 fn cancel_activity(client: &mut DiscordIpcClient) {
     client.clear_activity().expect("Error while clearing activity");
+    client.close().expect("Error while closing discord socket");
 }
 
 fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, building_series: &str) {
@@ -25,7 +28,7 @@ fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, buil
 
     let timestamps = Timestamps::new()
         .end(end_stop.timetable.actual_arrival_time.unwrap().timestamp());
-    let assets = Assets::new().large_image(building_series);
+    let assets = Assets::new().large_image(translate_series(building_series));
     let watch_button_url = format!("https://regenbogen-ice.de/trip/{}/{}", trip.train_type, trip.vzn);
     let watch_button = Button::new("Watch", 
         watch_button_url.as_str());
@@ -43,7 +46,7 @@ fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, buil
 }
 
 #[tokio::main]
-async fn main() -> Result<(), ICEPortalRichPresenseError>{
+async fn main() -> Result<(), ICEPortalRichPresenceError>{
     let trip_info = ICEPortal::fetch_trip_info().await?;
     let status_info = ICEPortal::fetch_status().await?;
     let available_stops = trip_info.trip.stops.iter()
@@ -78,7 +81,7 @@ async fn main() -> Result<(), ICEPortalRichPresenseError>{
     client.set_activity(payload)
         .expect("Error while setting activity");
     
-    println!("Connected! ICEPortal rich presense is running. Stop it by pressing Ctrl + C");
+    println!("Connected! ICEPortal rich presence is running. Stop it by pressing Ctrl + C");
 
     loop {
         select! {

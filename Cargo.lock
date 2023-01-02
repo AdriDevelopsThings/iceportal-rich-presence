@@ -410,9 +410,9 @@ dependencies = [
 
 [[package]]
 name = "iceportal"
-version = "2.0.1"
+version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a2ee340cf3220dbcbdfb59924b8a2d2131fe8165b12e8224c62b96a5b0c5047"
+checksum = "ce8fdfc1406ced11f00f2860cb03fdc1e4f0868d412a6dace382b96f76b9af3d"
 dependencies = [
  "chrono",
  "reqwest",
@@ -421,8 +421,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "iceportal_rich_presense"
-version = "1.0.2"
+name = "iceportal_rich_presence"
+version = "1.0.3"
 dependencies = [
  "discord-rich-presence",
  "iceportal",
