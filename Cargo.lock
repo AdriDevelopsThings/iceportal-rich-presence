@@ -410,9 +410,9 @@ dependencies = [
 
 [[package]]
 name = "iceportal"
-version = "2.0.2"
+version = "2.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce8fdfc1406ced11f00f2860cb03fdc1e4f0868d412a6dace382b96f76b9af3d"
+checksum = "41d1778fa3b2cd1dea8697ca6d761ed3abcae9f5256bf088b61f353c230060bb"
 dependencies = [
  "chrono",
  "reqwest",
