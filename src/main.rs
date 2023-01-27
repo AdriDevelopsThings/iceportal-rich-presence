@@ -32,6 +32,8 @@ fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, buil
     let watch_button_url = format!("https://regenbogen-ice.de/trip/{}/{}", trip.train_type, trip.vzn);
     let watch_button = Button::new("Watch", 
         watch_button_url.as_str());
+    let try_now_button = Button::new("Try now",
+        env!("CARGO_PKG_REPOSITORY"));
 
     let details = format!("Riding {} {} to {}", trip.train_type, trip.vzn, to);
     let state = format!("Next stop: {}", next_stop.station.name);
@@ -40,7 +42,7 @@ fn update_activity(client: &mut DiscordIpcClient, trip: TripInfo, to: &str, buil
         .state(state.as_str())
         .timestamps(timestamps)
         .assets(assets)
-        .buttons(vec![watch_button]);
+        .buttons(vec![watch_button, try_now_button]);
     client.set_activity(activity)
         .expect("Error while setting new activity");
 }
