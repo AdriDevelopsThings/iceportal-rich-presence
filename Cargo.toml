@@ -10,7 +10,7 @@ description = "Show your current ride in discord via the ICE portal api"
 
 
 [dependencies]
-discord-rich-presence = "~0.2"
-iceportal = "~2.0"
-inquire = "~0.5"
+discord-rich-presence = "0"
+iceportal = "2"
+inquire = "0"
 tokio = { version = "1", features = ["full"] }
