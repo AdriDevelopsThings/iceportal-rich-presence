@@ -1,6 +1,6 @@
 [package]
 name = "iceportal_rich_presence"
-version = "1.0.8"
+version = "1.0.9"
 edition = "2021"
 authors = ["AdriDevelopsThings"]
 readme = "README.md"
@@ -11,6 +11,6 @@ description = "Show your current ride in discord via the ICE portal api"
 
 [dependencies]
 discord-rich-presence = "0"
-iceportal = "2"
+iceportal = "3"
 inquire = "0"
 tokio = { version = "1", features = ["full"] }
