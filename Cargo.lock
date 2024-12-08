@@ -403,7 +403,7 @@ dependencies = [
 
 [[package]]
 name = "iceportal_rich_presence"
-version = "1.0.9"
+version = "1.0.10"
 dependencies = [
  "discord-rich-presence",
  "iceportal",
